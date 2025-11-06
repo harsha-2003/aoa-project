@@ -61,22 +61,9 @@ Both algorithms demonstrate \( O(n \log n) \) time complexity, confirmed experim
 
 ---
 
-## ⚙️ Repository Structure
+## 🏁 Conclusion
 
-aoa-project/
-│
-├── AOA_Project_Report.pdf # Final IEEE-formatted report
-├── code/
-│ ├── signage_greedy.py # Greedy algorithm implementation
-│ └── soundscape_skyline.py # Divide-and-conquer algorithm implementation
-│
-├── data/
-│ ├── signage_greedy_timings.csv # Experimental timings for greedy algorithm
-│ ├── soundscape_skyline_timings.csv # Experimental timings for divide & conquer
-│ ├── signage_greedy_runtime.png # Runtime vs input size (greedy)
-│ └── soundscape_skyline_runtime.png # Runtime vs input size (skyline)
-│
-├── appendix/
-│ └── LLM_prompts.txt # Prompts used for LaTeX and code generation
-│
-└── README.md # Project documentation (this file)
+This project successfully bridges theoretical algorithm design with real-world optimization challenges.
+By applying greedy and divide-and-conquer paradigms to domains such as trail management and urban sound modeling, we demonstrated that classical algorithms remain powerful tools for modern engineering problems. The experimental validation strongly supports the theoretical 𝑂(nlog𝑛).
+O(nlogn) efficiency of both approaches, highlighting their scalability and predictability.
+Beyond correctness and runtime proofs, this work emphasizes the interpretability of algorithmic logic in tangible contexts—illustrating how structured reasoning can directly enhance decision-making in sustainable infrastructure and environmental analytics.

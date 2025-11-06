@@ -63,3 +63,20 @@ Both algorithms demonstrate \( O(n \log n) \) time complexity, confirmed experim
 
 ## ⚙️ Repository Structure
 
+aoa-project/
+│
+├── AOA_Project_Report.pdf # Final IEEE-formatted report
+├── code/
+│ ├── signage_greedy.py # Greedy algorithm implementation
+│ └── soundscape_skyline.py # Divide-and-conquer algorithm implementation
+│
+├── data/
+│ ├── signage_greedy_timings.csv # Experimental timings for greedy algorithm
+│ ├── soundscape_skyline_timings.csv # Experimental timings for divide & conquer
+│ ├── signage_greedy_runtime.png # Runtime vs input size (greedy)
+│ └── soundscape_skyline_runtime.png # Runtime vs input size (skyline)
+│
+├── appendix/
+│ └── LLM_prompts.txt # Prompts used for LaTeX and code generation
+│
+└── README.md # Project documentation (this file)

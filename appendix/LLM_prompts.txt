@@ -1,0 +1,77 @@
+
+AOA Project – LLM Prompts Appendix
+Course: COT5405 – Analysis of Algorithms
+Authors: Harshavardhan Reddy Jonnala, Tanuja Naga Sai Palapati
+Tool Used: OpenAI GPT-5 (ChatGPT, October 2025)
+
+Purpose:
+The LLM was used strictly for LaTeX structuring, IEEE formatting assistance,
+and debugging Python benchmarking scripts. No theoretical proofs or
+algorithmic reasoning were generated without manual verification.
+All code and mathematical results were reviewed and validated by the authors.
+
+------------------------------------------------------------
+Prompt 1:
+"I want to create an IEEE-style LaTeX report template for my AOA project.
+Please give me the basic structure with title, authors, abstract, and sections."
+
+Response Summary:
+Generated a minimal IEEEtran template with placeholders for sections and correct
+\documentclass and package setup for Overleaf compatibility.
+
+------------------------------------------------------------
+Prompt 2:
+"I am getting a LaTeX error about 'Undefined control sequence' in \IEEEauthorblockA.
+Please fix the author and title formatting for two authors and one course name."
+
+Response Summary:
+GPT provided corrected syntax with escaped special characters (double backslashes)
+and fixed missing braces for the author block.
+
+------------------------------------------------------------
+Prompt 3:
+"Give me pseudocode formatting in LaTeX for a greedy algorithm using algorithmic package."
+
+Response Summary:
+Returned correct environment usage for \begin{algorithm} and \begin{algorithmic}
+including numbered lines, \State, and \If constructs.
+
+------------------------------------------------------------
+Prompt 4:
+"My LaTeX figure is not showing up; I used \includegraphics but it’s blank in PDF.
+How to correctly reference images stored in a data/ folder?"
+
+Response Summary:
+Suggested including \graphicspath{{data/}} and using \includegraphics[width=0.95\linewidth]{filename.png}.
+This fixed missing image rendering.
+
+------------------------------------------------------------
+Prompt 5:
+"I am getting 'File IO failure' and 'Syntax error' in my Gleam build; 
+help me understand why file not found occurs in Python benchmarking scripts."
+
+Response Summary:
+Explained that outputs were saved to the current working directory, not the data/ folder,
+and added os.makedirs('../data', exist_ok=True) to fix output path errors.
+
+------------------------------------------------------------
+Prompt 6:
+"Generate Python code to benchmark the greedy and divide-and-conquer algorithms
+and plot runtime vs n log n reference using matplotlib and pandas."
+
+Response Summary:
+Produced runnable Python scripts with randomized test data, time measurement,
+CSV export, and properly labeled plots saved in the data folder.
+
+------------------------------------------------------------
+Prompt 7:
+"I want to compress my AOA project with LaTeX, code, and images into one final ZIP
+for submission. Create organized folder structure and file names."
+
+Response Summary:
+GPT suggested folder structure:
+AOA_Project_Report.tex, code/, data/, appendix/ with LLM_prompts.txt,
+and generated final ZIP packaging instructions.
+
+------------------------------------------------------------
+End of Appendix

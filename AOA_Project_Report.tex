@@ -1,0 +1,127 @@
+
+\documentclass[conference]{IEEEtran}
+\usepackage{amsmath,amssymb,graphicx,algorithm,algpseudocode,hyperref,booktabs}
+\hypersetup{colorlinks=true, linkcolor=blue, urlcolor=blue, citecolor=blue}
+\graphicspath{{data/}}
+
+\title{\textbf{GREEDY AND DIVIDE-AND-CONQUER APPROACHES TO REAL-WORLD OPTIMIZATION: TRAIL SIGNAGE AND CITY SOUNDSCAPE ANALYSIS}}
+\author{\IEEEauthorblockN{\textbf{Harshavardhan Reddy Jonnala (UFID 1511--8670)}\\\textbf{Tanuja Naga Sai Palapati (UFID 8947--5480)}}\IEEEauthorblockA{\textbf{COT5405 -- Analysis of Algorithms}}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This project explores two practical optimization problems solved using classic algorithmic paradigms. The first problem, Minimal Trail Signage, applies a greedy algorithm to ensure complete visibility coverage on a scenic trail using the fewest signs. The second, City Soundscape Outline, models urban noise as overlapping intervals and applies a divide-and-conquer approach to compute the upper envelope of sound levels. Both problems are grounded in real-world domains, formalized as interval stabbing and skyline-merge abstractions, respectively. We provide theoretical proofs of correctness, detailed runtime analyses, domain interpretations, and experimental verification demonstrating $O(n \log n)$ scaling. The work illustrates how abstract algorithmic reasoning translates into practical decision-making tools in environmental planning and acoustic monitoring.
+\end{abstract}
+
+\section{\textbf{INTRODUCTION}}
+Algorithmic paradigms such as greedy and divide-and-conquer underpin many practical systems in planning, optimization, and simulation. This project studies two real-world cases that can be optimally solved by these methods. The first addresses signage placement along a trail system. Park authorities must guarantee every visible segment of the trail contains at least one visible sign, minimizing installation costs. This problem naturally maps to the classical interval stabbing formulation. The second examines how urban planners summarize a city’s sound environment. Given multiple events generating noise over time, the task is to produce an outline of the loudest event at each instant. This resembles the computational geometry skyline problem, solvable efficiently using divide-and-conquer merging. Both tasks demonstrate how algorithmic design principles transfer from theoretical computer science to tangible domains. The report presents formal abstractions, correctness proofs, runtime analyses, and empirical graphs confirming theoretical trends.
+
+\section{\textbf{GREEDY PROBLEM: MINIMAL TRAIL SIGNAGE}}
+\subsection{\textbf{Real Problem}}
+National parks maintain long scenic trails with sections where signage visibility is limited by bends or foliage. Each visible region can be represented as an interval along the trail. The goal is to install the fewest possible signs while ensuring that every visibility window includes at least one sign. This reduces installation and maintenance costs while maintaining clear visitor guidance.
+
+\subsection{\textbf{Abstraction (Interval Hitting Set)}}
+Let $\mathcal{I}=\{[s_i,e_i]\}_{i=1}^{n}$ represent visibility windows along the trail. We must select the smallest set of points $P=\{p_1,\dots,p_k\}$ such that for every interval $[s_i,e_i]\in \mathcal{I}$, $\exists p_j\in P$ satisfying $s_i \le p_j \le e_i$. This is the interval stabbing (or hitting set) problem, well-known to admit an optimal greedy solution.
+
+\subsection{\textbf{Algorithm (Pseudocode)}}
+\begin{algorithm}[h]
+\caption{\textsc{MinSigns}$(\mathcal{I})$}
+\begin{algorithmic}[1]
+\State Sort $\mathcal{I}$ by increasing right endpoint $e_i$
+\State $P \gets \emptyset$
+\For{each interval $[s,e] \in \mathcal{I}$}
+  \If{$[s,e]$ not yet stabbed by any $p \in P$}
+    \State Add $e$ to $P$
+  \EndIf
+\EndFor
+\State \Return $P$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{\textbf{Proof of Correctness}}
+The greedy choice of placing a sign at the right endpoint of the earliest finishing interval is optimal. Suppose an optimal solution $P^*$ differs in its first point $p_1^*$ from the greedy choice $p_g=e_1$. Replacing $p_1^*$ by $p_g$ preserves feasibility since all intervals starting before $e_1$ are covered. Repeating this replacement iteratively transforms $P^*$ into the greedy solution without increasing the number of signs. Thus, by an exchange argument, the greedy method yields an optimal minimal set. The algorithm covers all intervals because each uncovered interval triggers a new sign placement. Every interval overlaps some chosen endpoint, ensuring total coverage.
+
+\subsection{\textbf{Runtime Analysis and Domain Explanation}}
+The algorithm first sorts all $n$ intervals, requiring $O(n \log n)$ comparisons. It then performs a single linear pass, checking each interval once to determine if it is covered. The total runtime is therefore $T(n)=O(n \log n)+O(n)=O(n \log n)$. Sorting dominates computational cost, which is asymptotically optimal since comparison-based sorting has a known lower bound of $\Omega(n \log n)$. From a domain perspective, the process corresponds to listing all trail visibility segments by their end position, then placing a sign at each point where visibility expires. Each sign guarantees backward coverage, ensuring minimal installations.
+
+\subsection{\textbf{Experimental Graph and Analysis}}
+We evaluated performance using randomly generated interval sets of increasing size. Each experiment averaged multiple runs to minimize variance. As shown in Fig.~\ref{fig:signage}, runtime grows proportionally to $n \log n$, matching the theoretical bound. Deviations at small $n$ reflect Python interpreter overhead. The greedy approach efficiently scales to tens of thousands of intervals, confirming both correctness and asymptotic behavior.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{signage_greedy_runtime.png}
+\caption{Trail signage (Greedy): runtime vs.\ $n$ with scaled $n \log n$ reference.}
+\label{fig:signage}
+\end{figure}
+
+\subsection{\textbf{Explanation in Domain Terms}}
+The greedy method translates directly to the park management context. Sorting visibility regions by where the line of sight ends is equivalent to walking the trail and noting the last point where a sign would still be visible. At each such point, the ranger places a sign visible from all prior uncovered viewpoints. Once placed, the ranger proceeds forward to the next uncovered segment. This intuitive “sign where view ends” policy is locally optimal and globally minimal—precisely the essence of greedy optimality in a tangible real-world task.
+
+\section{\textbf{DIVIDE-AND-CONQUER PROBLEM: CITY SOUNDSCAPE OUTLINE}}
+\subsection{\textbf{Real Problem}}
+Urban planners and acoustic engineers frequently analyze sound patterns from overlapping city events—markets, parades, concerts—to determine environmental noise exposure. Each event is characterized by a start time, end time, and loudness. The objective is to derive a continuous “soundscape outline” describing the maximum loudness at every moment. This provides a compact representation for regulation compliance and environmental planning.
+
+\subsection{\textbf{Abstraction (Upper Envelope Merge)}}
+Each event corresponds to a rectangle $[L_i,R_i)\times[0,H_i]$ in time-loudness space. The target function is the upper envelope of all rectangles, obtained by merging overlapping height segments. This problem is equivalent to the skyline computation in computational geometry and lends itself naturally to a divide-and-conquer solution that merges local outlines recursively.
+
+\subsection{\textbf{Algorithm (Pseudocode)}}
+\begin{algorithm}[h]
+\caption{\textsc{SoundscapeOutline}$(E)$}
+\begin{algorithmic}[1]
+\If{$|E|=0$} \State \Return $\emptyset$ \EndIf
+\If{$|E|=1$} \State \Return $[(L,H),(R,0)]$ \EndIf
+\State Split $E$ into $E_L$ and $E_R$ by start time
+\State $S_L \gets \textsc{SoundscapeOutline}(E_L)$
+\State $S_R \gets \textsc{SoundscapeOutline}(E_R)$
+\State \Return $\textsc{MergeUpperEnvelope}(S_L,S_R)$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{\textbf{Proof of Correctness}}
+We prove correctness by induction on $n$. For $n \le 1$, correctness is trivial. Assume correctness for smaller subproblems. When merging two outlines, at every time coordinate we maintain the current heights $h_L$ and $h_R$. The merged output records a new point whenever $\max(h_L,h_R)$ changes. Hence, the merged outline exactly matches the global upper envelope. No height change is missed and no redundant change is added. Thus, by induction, the algorithm constructs the precise soundscape outline for any $n$.
+
+\subsection{\textbf{Runtime Analysis and Domain Explanation}}
+Let $T(n)$ denote the running time. Each recursive level splits events into two halves and merges their outlines in $O(n)$ time. Therefore, $T(n)=2T(n/2)+O(n)$, yielding $T(n)=O(n \log n)$ by the Master Theorem. Practically, this means that doubling the number of events increases runtime slightly more than linearly, consistent with logarithmic overhead from merging. In domain language, planners divide the city into two regions, compute their individual sound outlines, and then merge them chronologically, always taking the louder of the two. This “listen and merge” process efficiently scales even as the number of events grows.
+
+\subsection{\textbf{Experimental Graph and Analysis}}
+We benchmarked runtime using synthetic event data with random durations and amplitudes. As shown in Fig.~\ref{fig:sound}, observed runtimes follow an $n \log n$ trend, closely tracking theoretical expectations. Merge operations dominate total cost but remain predictable. The algorithm efficiently handles large event datasets, demonstrating scalability and accuracy in summarizing complex acoustic environments.
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=0.95\linewidth]{soundscape_skyline_runtime.png}
+\caption{Soundscape (Divide-and-Conquer): runtime vs.\ $n$ with scaled $n \log n$ reference.}
+\label{fig:sound}
+\end{figure}
+
+\subsection{\textbf{Explanation in Domain Terms}}
+In the city context, each event generates noise over a time span. The divide-and-conquer algorithm is akin to combining two neighborhoods’ sound maps. Each subarea’s loudness outline is computed independently. When merged, the city planner “listens” to both and keeps whichever is louder at any given time, recording a new value only when dominance changes. This step mirrors human perception—tracking whichever event dominates the environment—and results in an accurate and compact outline of urban sound intensity.
+
+\section{\textbf{RESULTS DISCUSSION}}
+Both problems exhibit identical asymptotic complexity, $O(n \log n)$, yet differ structurally: greedy relies on ordering and local selection, while divide-and-conquer decomposes and merges hierarchically. Experimental curves confirm the theoretical growth rates. For trail signage, the sorting stage dominates; for soundscape merging, the recursive merge depth dictates cost. In both, the linear scan component is dwarfed by logarithmic overhead, matching analytical predictions. The results also highlight domain efficiency: simple, intuitive decision rules yield globally optimal or near-optimal behavior when grounded in correct abstractions. The measured graphs validate algorithmic efficiency even for large input sizes, supporting theoretical scalability claims.
+
+\section{\textbf{CONCLUSION}}
+We modeled two realistic decision problems—optimal trail signage and city soundscape outline—using core algorithmic paradigms. Greedy selection based on earliest interval endpoints provided a minimal signage configuration. Divide-and-conquer merging yielded efficient computation of the city’s upper noise envelope. Theoretical analyses, proofs, and empirical validation all confirm $O(n \log n)$ scaling. These studies reinforce that elegant algorithmic reasoning directly enhances problem-solving in environmental and infrastructure domains. The accompanying code and datasets support full reproducibility and further experimentation.
+
+\appendices
+\section{\textbf{APPENDIX A: CODE LISTINGS}}
+Full Python implementations for both algorithms and benchmarking scripts are included locally: \\
+\href{run:./code/signage_greedy.py}{signage\_greedy.py}, \\
+\href{run:./code/soundscape_skyline.py}{soundscape\_skyline.py}.
+
+\section{\textbf{APPENDIX B: RUNTIME CSVS}}
+Runtime datasets used for experimental analysis are available at: \\
+\href{run:./data/signage_greedy_timings.csv}{signage\_greedy\_timings.csv}, \\
+\href{run:./data/soundscape_skyline_timings.csv}{soundscape\_skyline\_timings.csv}.
+
+\section{\textbf{APPENDIX C: LLM USAGE DISCLOSURE}}
+A record of prompts and responses used during LaTeX and code generation is available in: \\
+\href{run:./appendix/LLM_prompts.txt}{appendix/LLM\_prompts.txt}.
+
+\section{\textbf{APPENDIX D: REFERENCES}}
+\begin{thebibliography}{1}
+\bibitem{interval} Korte, B., Vygen, J. (2018). \emph{Combinatorial Optimization: Theory and Algorithms}. Springer.
+\bibitem{skyline} Preparata, F. P., Shamos, M. I. (1985). \emph{Computational Geometry: An Introduction}. Springer.
+\end{thebibliography}
+
+\end{document}

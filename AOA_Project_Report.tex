@@ -101,22 +101,26 @@ In the city context, each event generates noise over a time span. The divide-and
 Both problems exhibit identical asymptotic complexity, $O(n \log n)$, yet differ structurally: greedy relies on ordering and local selection, while divide-and-conquer decomposes and merges hierarchically. Experimental curves confirm the theoretical growth rates. For trail signage, the sorting stage dominates; for soundscape merging, the recursive merge depth dictates cost. In both, the linear scan component is dwarfed by logarithmic overhead, matching analytical predictions. The results also highlight domain efficiency: simple, intuitive decision rules yield globally optimal or near-optimal behavior when grounded in correct abstractions. The measured graphs validate algorithmic efficiency even for large input sizes, supporting theoretical scalability claims.
 
 \section{\textbf{CONCLUSION}}
-We modeled two realistic decision problems—optimal trail signage and city soundscape outline—using core algorithmic paradigms. Greedy selection based on earliest interval endpoints provided a minimal signage configuration. Divide-and-conquer merging yielded efficient computation of the city’s upper noise envelope. Theoretical analyses, proofs, and empirical validation all confirm $O(n \log n)$ scaling. These studies reinforce that elegant algorithmic reasoning directly enhances problem-solving in environmental and infrastructure domains. The accompanying code and datasets support full reproducibility and further experimentation.
+We modeled two realistic decision problems—optimal trail signage and city soundscape outline—using core algorithmic paradigms. Greedy selection based on earliest interval endpoints provided a minimal signage configuration. Divide-and-conquer merging yielded efficient computation of the city’s upper noise envelope. Theoretical analyses, proofs, and empirical validation all confirm $O(n \log n)$ scaling. These studies reinforce that elegant algorithmic reasoning directly enhances problem-solving in environmental and infrastructure domains. The accompanying code and datasets support full reproducibility and further experimentation.\\
+project github link- \\ 
+\url{https://github.com/harsha-2003/aoa-project.git}
 
 \appendices
 \section{\textbf{APPENDIX A: CODE LISTINGS}}
-Full Python implementations for both algorithms and benchmarking scripts are included locally: \\
-\href{run:./code/signage_greedy.py}{signage\_greedy.py}, \\
-\href{run:./code/soundscape_skyline.py}{soundscape\_skyline.py}.
+Full Python implementations for both algorithms and benchmarking scripts are available on GitHub: \\
+\url{https://github.com/harsha-2003/aoa-project/blob/main/code/signage_greedy.py}, \\
+\url{https://github.com/harsha-2003/aoa-project/blob/main/code/soundscape_skyline.py}.
 
 \section{\textbf{APPENDIX B: RUNTIME CSVS}}
 Runtime datasets used for experimental analysis are available at: \\
-\href{run:./data/signage_greedy_timings.csv}{signage\_greedy\_timings.csv}, \\
-\href{run:./data/soundscape_skyline_timings.csv}{soundscape\_skyline\_timings.csv}.
+\url{https://github.com/harsha-2003/aoa-project/blob/main/data/signage_greedy_timings.csv}, \\
+\url{https://github.com/harsha-2003/aoa-project/blob/main/data/soundscape_skyline_timings.csv}.
+
 
 \section{\textbf{APPENDIX C: LLM USAGE DISCLOSURE}}
 A record of prompts and responses used during LaTeX and code generation is available in: \\
-\href{run:./appendix/LLM_prompts.txt}{appendix/LLM\_prompts.txt}.
+\url{https://github.com/harsha-2003/aoa-project/blob/main/appendix/LLM_prompts.txt}.
+
 
 \section{\textbf{APPENDIX D: REFERENCES}}
 \begin{thebibliography}{1}
